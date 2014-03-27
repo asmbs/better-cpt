@@ -161,7 +161,7 @@ abstract class WP_CPT
    *
    * Registers the post type using the args set in $this->args.
    *
-   * @link  https://codex.wordpress.org/Function_Reference/register_post_type
+   * @link  http://codex.wordpress.org/Function_Reference/register_post_type
    * @see  set_args(), set_manual_args()
    *
    */
@@ -178,7 +178,7 @@ abstract class WP_CPT
    * called on plugin activation or theme activation...flush_rewrite_rules() is a very
    * expensive operation and will cause big overhead problems if you use it on every page load.
    *
-   * @link  https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+   * @link  http://codex.wordpress.org/Function_Reference/flush_rewrite_rules
    * @see   register_post_type()
    *
    */
@@ -207,7 +207,7 @@ abstract class WP_CPT
    *                                generated from previous parameters will be overwritten by
    *                                this array, so be mindful.
    *
-   * @link   https://codex.wordpress.org/Function_Reference/register_post_type
+   * @link   http://codex.wordpress.org/Function_Reference/register_post_type
    *
    */
   public function set_args( $singular, $plural, $pos, $icon = 'dashicons-admin-post', $args = [] )
@@ -272,7 +272,7 @@ abstract class WP_CPT
    *
    * @param  array  $args  An array of arguments.
    *
-   * @link   https://codex.wordpress.org/Function_Reference/register_post_type
+   * @link   http://codex.wordpress.org/Function_Reference/register_post_type
    *
    */
   public function set_manual_args( $args )
@@ -300,6 +300,7 @@ abstract class WP_CPT
   {
     return $columns;
   }
+
 
   /**
    * void populate_custom_columns( string $column )

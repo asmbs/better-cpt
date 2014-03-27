@@ -156,9 +156,32 @@ abstract class WP_CPT
   // Post type registration
   // -------------------------------------------------------------------------------------------
 
+  /**
+   * void register_post_type()
+   *
+   * Registers the post type using the args set in $this->args.
+   *
+   * @link  https://codex.wordpress.org/Function_Reference/register_post_type
+   * @see  set_args(), set_manual_args()
+   *
+   */
   public function register_post_type()
-  {}
+  {
+    register_post_type( $this->post_type, $this->args );
+  }
 
+
+  /**
+   * void register_and_flush()
+   *
+   * Calls $this->register_post_types(), then flushes rewrite rules. This method should ONLY be
+   * called on plugin activation or theme activation...flush_rewrite_rules() is a very
+   * expensive operation and will cause big overhead problems if you use it on every page load.
+   *
+   * @link  https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+   * @see   register_post_type()
+   *
+   */
   public function register_and_flush()
   {}
 

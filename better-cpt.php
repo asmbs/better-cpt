@@ -301,6 +301,16 @@ abstract class WP_CPT
     return $columns;
   }
 
+  /**
+   * void populate_custom_columns( string $column )
+   *
+   * Control what is put in custom columns for each post in the table. Contrary to its title,
+   * you can also use this function to control what is shown in the standard columns, but use
+   * this idea with caution!
+   *
+   * @param  string  $column  The name (ID) of the current column.
+   *
+   */
   public function populate_custom_columns( $column )
   {}
 

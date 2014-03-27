@@ -35,9 +35,8 @@
  *      required to be.
  *
  *  3.  The constructor sets basically every hook you could possibly need, so it's recommended
- *      that you not override it, but you can. If you do, be sure to either manually override
- *      the hooks, or call parent::__construct() at the beginning of your constructor, to
- *      minimize the potential for missing stuff.
+ *      that you not override it--you should instead override the additional_hooks() method
+ *      and place your stuff in there.
  * ---------------------------------------------------------------------------------------------
  */
 abstract class WP_CPT

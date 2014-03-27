@@ -188,11 +188,97 @@ abstract class WP_CPT
     flush_rewrite_rules();
   }
 
-  public function set_args()
-  {}
 
-  public function set_manual_args()
-  {}
+  /**
+   * void set_args( string $singular, string $plural, int|string $pos [, string $icon = 'dashicons-admin-post' [, array $args = [] ]] )
+   *
+   * Sets arguments for register_post_type(). Sets labels automatically based on the $singular
+   * and $plural arguments. This method should be called immediately after instantiation.
+   * Alternatively, override the register_post_type() function to call this method AND call
+   * parent::register_post_types().
+   *
+   * @param  string      $singular  A translatable singular name for this post type.
+   * @param  string      $plural    A translatable plural name.
+   * @param  int|string  $pos       The desired menu position (use decimals, e.g. '20.1' for
+   *                                more granular control).
+   * @param  string      $icon      The dashicons helper name for the icon you wish to use (pass
+   *                                NULL or an empty string if you plan on using your own).
+   * @param  array       $args      Additional earguments to merge in. Note that arguments
+   *                                generated from previous parameters will be overwritten by
+   *                                this array, so be mindful.
+   *
+   * @link   https://codex.wordpress.org/Function_Reference/register_post_type
+   *
+   */
+  public function set_args( $singular, $plural, $pos, $icon = 'dashicons-admin-post', $args = [] )
+  {
+    // Standardize case of provided labels.
+    $singular = ucwords( strtolower( $singular ) );
+    $plural   = ucwords( strtolower( $plural ) );
+
+    // Set labels.
+    $labels = [
+      'name'               => $plural,
+      'singular_name'      => $singular,
+      'menu_name'          => $plural,
+      'menu_admin_bar'     => $singular,
+      'all_items'          => sprintf( __( 'All %s' ), $plural ),
+      'add_new'            => __( 'Add New' ),
+      'add_new_item'       => sprintf( __( 'Add New %s' ), $singular ),
+      'edit_item'          => sprintf( __( 'Edit %s' ), $singular ),
+      'new_item'           => sprintf( __( 'New %s' ), $singular ),
+      'view_item'          => sprintf( __( 'View %s' ), $singular ),
+      'search_items'       => sprintf( __( 'Search %s' ), $plural ),
+      'not_found'          => sprintf( __( 'No %s found.' ), strtolower( $plural ) ),
+      'not_found_in_trash' => sprintf( __( 'No %s found in trash.' ), strtolower( $plural ) ),
+      'parent_item'        => sprintf( __( 'Parent %s' ), $singular ),
+      'parent_item_colon'  => sprintf( __( 'Parent %s' ), $singular )
+    ];
+
+    // Generate slug.
+    $slug = sanitize_title( $plural, 'post type slug' );
+
+    // Set generated arguments.
+    $auto_args = [
+      'label'               => $plural,
+      'labels'              => $labels,
+      'public'              => true,
+      'exclude_from_search' => false,
+      'publicly_queryable'  => true,
+      'show_ui'             => true,
+      'show_in_nav_menus'   => true,
+      'show_in_menu'        => true,
+      'show_in_admin_bar'   => true,
+      'menu_position'       => $pos,
+      'menu_icon'           => $icon,
+      'hierarchical'        => false,
+      'supports'            => [ 'title', 'editor' ],
+      'has_archive'         => true,
+      'rewrite'             => [ 'slug' => $slug, 'with_front' => true ],
+      'can_export'          => true
+    ];
+
+    // Merge and save arguments.
+    $this->args = array_merge_recursive( $this->args, $auto_args, $args );
+  }
+
+
+  /**
+   * void set_manual_args( array $args )
+   *
+   * Manually set arguments for register_post_type, just like the old-fashioned way. This method
+   * should be called immediately after instantiation, or called in an overridden
+   * register_post_type() implementation in conjunction with parent::register_post_types().
+   *
+   * @param  array  $args  An array of arguments.
+   *
+   * @link   https://codex.wordpress.org/Function_Reference/register_post_type
+   *
+   */
+  public function set_manual_args( $args )
+  {
+    $this->args = array_merge_recursive( $this->args, $args );
+  }
 
   // ===========================================================================================
 

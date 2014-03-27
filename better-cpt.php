@@ -315,9 +315,37 @@ abstract class WP_CPT
   public function populate_custom_columns( $column )
   {}
 
-  public function add_sortable_columns( $columns )
-  {}
 
+  /**
+   * array add_sortable_columns( array $columns )
+   *
+   * Add an ordering directive to columns to make them sortable. The column's value
+   * corresponds to the 'orderby' value in WP_Query.
+   *
+   * @param   array  $columns  The array of sortable columns. Format: [id] => orderby
+   * @return  array            The new array of sortable columns.
+   *
+   * @link    http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters
+   *
+   */
+  public function add_sortable_columns( $columns )
+  {
+    return $columns;
+  }
+
+
+  /**
+   * void sortable_columns_orderby( WP_Query $query )
+   *
+   * If a custom column requires something other than one of the build-in 'orderby' values
+   * to function properly, its procedure should be defined here. Once established, the same
+   * ordering can be used anywhere in WordPress, not just in the post manager table.
+   *
+   * @param  WP_Query  $query  The current query, passed by reference.
+   *
+   * @link   http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters
+   *
+   */
   public function sortable_columns_orderby( $query )
   {}
 

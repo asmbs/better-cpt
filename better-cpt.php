@@ -183,7 +183,10 @@ abstract class WP_CPT
    *
    */
   public function register_and_flush()
-  {}
+  {
+    register_post_type( $this->post_type, $this->args );
+    flush_rewrite_rules();
+  }
 
   public function set_args()
   {}

@@ -75,8 +75,82 @@ abstract class WP_CPT
    */
   public function __construct()
   {
+    // Set activation and deactivation hooks.
+    $this->register_activation_hooks();
+    $this->register_deactivation_hooks();
 
+    // Register post type.
+    add_action( 'init', [ $this, 'register_post_type' ] );
+
+    // Add custom columns to the post manager
+    add_filter( 'manage_edit-'. $this->post_type .'_columns', [ $this, 'add_custom_columns' ] );
+    add_action( 'manage_'. $this->post_type .'_posts_custom_column', [ $this, 'populate_custom_columns' ] );
+
+    // Manage sortable columns in the post manager
+    add_filter( 'manage_edit-'. $this->post_type .'_sortable_columns', [ $this, 'add_sortable_columns' ] );
+    add_action( 'pre_get_posts', [ $this, 'sortable_columns_orderby' ] );
+
+    // Customize the confirmation messages shown on the post edit screen
+    add_filter( 'post_updated_messages', [ $this, 'post_updated_messages' ] );
+
+    // Add contextual help tabs
+    add_action( 'admin_head', [ $this, 'add_help_tabs' ] );
+
+    // Enqueue scripts.
+    add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_scripts' ] );
+    add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
+
+    // Add meta boxes.
+    add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
+
+    // Handle saving/updating/removal of post meta.
+    add_action( 'save_post', [ $this, 'update_post_meta' ] );
+
+    // If this post type has meta linking it to other post types, this hook should handle
+    // what happens if the relates post is removed.
+    add_action( 'delete_post', [ $this, 'remove_linked_meta'] );    
+
+    // Modify queries
+    add_action( 'pre_get_posts', [ $this, 'modify_query' ] );
+
+    // Add AJAX endpoints
+    $this->add_ajax_endpoints();
+
+    // Set any additional hooks
+    $this->additional_hooks();
   }
-  
+
+
+  /**
+   * void register_activation_hooks()
+   *
+   * Override this method to call register_activation_hook() for your plugin, or if you're
+   * building a theme, hook into the 'after_switch_theme' action.
+   *
+   * These hooks are commonly used for flushing permalink rules to support your post type's
+   * rewrite rules, so this class includes a utility method for doing just that.
+   *
+   * @see  register_and_flush()
+   *
+   */
+  public function register_activation_hooks()
+  {}
+
+
+  /**
+   * void register_deactivation_hooks()
+   *
+   * Override this method if you need to register a deactivation hook for your plugin. If
+   * you're building a theme, you should hook into the 'switch_theme' action.
+   *
+   */
+  public function register_deactivation_hooks()
+  {}
+
   // ===========================================================================================
+
+
+  // -------------------------------------------------------------------------------------------
+  // Post type registration
+  // -------------------------------------------------------------------------------------------
 }

@@ -287,8 +287,19 @@ abstract class WP_CPT
   // Custom post manager columns
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * array add_custom_columns( array $columns )
+   *
+   * Modify the list of columns that show on the post manager screen.
+   *
+   * @param   array  $columns  The current array of columns. Format: [id] => Display Title.
+   * @return  array            The updated column array.
+   *
+   */
   public function add_custom_columns( $columns )
-  {}
+  {
+    return $columns;
+  }
 
   public function populate_custom_columns( $column )
   {}

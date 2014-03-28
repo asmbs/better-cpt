@@ -24,17 +24,15 @@
  * endpoints and more.
  *
  * IMPORTANT NOTES:
- * 
- *  1.  This class is abstract, so you MUST extend it. You cannot instantiate it! It
- *      also contains several abstract methods, listed below. These methods MUST be overridden
- *      in your extending class.
  *
- *      ABSTRACT METHODS (must be overridden in your extending class):
+ *  1.  You can (and should) override any method defined in this class, with the exception of
+ *      the set_args() and set_manual_args() methods. You can also add your own methods, which
+ *      you will have to do if you do anything that requires a callback. For example, when you
+ *      override $this->add_meta_boxes() to register your own meta boxes, you'll call
+ *      WordPress's add_meta_box() function, which requires a callback for actually rendering
+ *      the content of the meta box. You'll want to define that callback in your class.
  *
- *  2.  Any non-abstract method may also be overridden in your extending class, but is not
- *      required to be.
- *
- *  3.  The constructor sets basically every hook you could possibly need, so it's recommended
+ *  2.  The constructor sets basically every hook you could possibly need, so it's recommended
  *      that you not override it--you should instead override the additional_hooks() method
  *      and place your stuff in there.
  * ---------------------------------------------------------------------------------------------

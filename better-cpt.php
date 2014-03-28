@@ -210,7 +210,7 @@ abstract class WP_CPT
    * @link   http://codex.wordpress.org/Function_Reference/register_post_type
    *
    */
-  public function set_args( $singular, $plural, $pos, $icon = 'dashicons-admin-post', $args = [] )
+  final public function set_args( $singular, $plural, $pos, $icon = 'dashicons-admin-post', $args = [] )
   {
     // Standardize case of provided labels.
     $singular = ucwords( strtolower( $singular ) );
@@ -275,7 +275,7 @@ abstract class WP_CPT
    * @link   http://codex.wordpress.org/Function_Reference/register_post_type
    *
    */
-  public function set_manual_args( $args )
+  final public function set_manual_args( $args )
   {
     $this->args = array_merge_recursive( $this->args, $args );
   }

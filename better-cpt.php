@@ -48,6 +48,7 @@ abstract class WP_CPT
   /**
    * @var  string  The post type slug (what you'll see for 'post_type' across the WordPress
    *               universe).
+   *
    */
   public $post_type = '';
 
@@ -56,6 +57,7 @@ abstract class WP_CPT
    *               method for setting them automatically (provided a few parameters), as well as
    *               one for setting them automatically.
    * @see  set_args(), set_manual_args()
+   *
    */
   private $args = [];
 

@@ -401,6 +401,14 @@ abstract class WP_CPT
   // Meta boxes
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * void add_meta_boxes()
+   *
+   * Register meta boxes to be shown in the post editor, using add_meta_box().
+   *
+   * @link  http://codex.wordpress.org/Function_Reference/add_meta_box
+   *
+   */
   public function add_meta_boxes()
   {}
 
@@ -411,9 +419,33 @@ abstract class WP_CPT
   // Metadata management
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * void update_post_meta( int $ID )
+   *
+   * Use this function to sanitize and update any post meta that your meta boxes modify.
+   *
+   * @param  int  $ID  The ID of the post being updated.
+   *
+   */
   public function update_post_meta( $ID )
   {}
 
+
+
+  /**
+   * void remove_linked_meta( int $ID )
+   *
+   * WordPress automatically handles deleting a posts' meta data when that post is deleted, so
+   * that is NOT what this method is for.
+   *
+   * Implement this method only if a post of your post type uses meta data to associate itself
+   * with another post (a post-to-post relationship). If you have such a relationship, and a
+   * "related" post is deleted, this method should take care of removing the meta that defined
+   * that relationship, to prevent broken links and keep your data consistent.
+   *
+   * @param  int  $ID  The ID of the post that was deleted.
+   *
+   */
   public function remove_linked_meta( $ID )
   {}
 

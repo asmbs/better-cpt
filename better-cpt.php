@@ -549,6 +549,15 @@ abstract class WP_CPT
   // AJAX endpoints
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * void add_ajax_endpoints()
+   *
+   * Register all your wp_ajax_{endpoint_name} actions here. You'll obviously have to define
+   * your own callback methods for any endpoints you set here.
+   *
+   * @link  http://codex.wordpress.org/Plugin_API/Action_Reference/wp_ajax_(action)
+   *
+   */
   public function add_ajax_endpoints()
   {}
 

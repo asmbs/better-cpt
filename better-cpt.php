@@ -197,6 +197,8 @@ abstract class WP_CPT
    * Alternatively, override the register_post_type() function to call this method AND call
    * parent::register_post_types().
    *
+   * This method is final (it cannot be overridden by your class).
+   *
    * @param  string      $singular  A translatable singular name for this post type.
    * @param  string      $plural    A translatable plural name.
    * @param  int|string  $pos       The desired menu position (use decimals, e.g. '20.1' for
@@ -269,6 +271,8 @@ abstract class WP_CPT
    * Manually set arguments for register_post_type, just like the old-fashioned way. This method
    * should be called immediately after instantiation, or called in an overridden
    * register_post_type() implementation in conjunction with parent::register_post_types().
+   *
+   * This method is final (it cannot be overridden by your class).
    *
    * @param  array  $args  An array of arguments.
    *

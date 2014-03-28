@@ -456,6 +456,17 @@ abstract class WP_CPT
   // Query modifications
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * void modify_query( WP_Query $query )
+   *
+   * Run on pre_get_posts; allows you to modify parameters of the current query before it is
+   * actually made (before posts are retrieved).
+   *
+   * @param  WP_Query  $query  The current query.
+   *
+   * @link   http://codex.wordpress.org/Class_Reference/WP_Query
+   *
+   */
   public function modify_query( $query )
   {}
 

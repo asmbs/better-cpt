@@ -510,9 +510,35 @@ abstract class WP_CPT
   // Script and style enqueuing
   // -------------------------------------------------------------------------------------------
   
-  public function enqueue_frontend_scripts( $hook )
+  /**
+   * void enqueue_frontend_scripts()
+   *
+   * Runs on wp_enqueue_scripts; enqueue any front-end scripts or stylesheets in your
+   * implementation of this method.
+   *
+   * @link  http://codex.wordpress.org/Plugin_API/Action_Reference/wp_enqueue_scripts
+   * @link  http://codex.wordpress.org/Function_Reference/wp_enqueue_script
+   * @link  http://codex.wordpress.org/Function_Reference/wp_enqueue_style
+   *
+   */
+  public function enqueue_frontend_scripts()
   {}
 
+
+  /**
+   * void enqueue_admin_scripts( string $hook )
+   *
+   * Runs on admin_enqueue_scripts; enqueue admin scripts and/or stylesheets here. You can also
+   * target specific admin pages (e.g. edit.php, post-new.php, etc.) using $hook.
+   *
+   * @param  string  $hook  The hook suffix for the current admin screen. See the documentation
+   *                        for the admin_enqueue_scripts action for more information.
+   *
+   * @link   http://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+   * @link   http://codex.wordpress.org/Function_Reference/wp_enqueue_script
+   * @link   http://codex.wordpress.org/Function_Reference/wp_enqueue_style
+   *
+   */
   public function enqueue_admin_scripts( $hook )
   {}
 

@@ -107,6 +107,9 @@ abstract class WP_CPT
     // Handle saving/updating/removal of post meta.
     add_action( 'save_post', [ $this, 'update_post_meta' ] );
 
+    // Restore post meta when restoring a revision (if post type supports it)
+    add_action( 'wp_restore_post_revision', [ $this, 'restore_meta_from_revision'], 10, 2 );
+
     // If this post type has meta linking it to other post types, this hook should handle
     // what happens if the relates post is removed.
     add_action( 'delete_post', [ $this, 'remove_linked_meta'] );    
@@ -424,12 +427,42 @@ abstract class WP_CPT
    *
    * Use this function to sanitize and update any post meta that your meta boxes modify.
    *
+   * IMPORTANT NOTE: If your post type supports revisions, and you want your meta data to be
+   * under revision control too, use update_metadata() instead of update_post_meta(). The latter
+   * will divert to the parent ID if it's given the ID of a revision. Also, if you want your
+   * meta data under revision control, you must implement restore_meta_from_revision() to 
+   * handle the process of transferring the restored revision's meta to the parent post.
+   *
    * @param  int  $ID  The ID of the post being updated.
+   *
+   * @see    restore_meta_from_revision()
+   * @link   http://codex.wordpress.org/Function_Reference/update_post_meta
+   * @link   http://codex.wordpress.org/Function_Reference/update_metadata
    *
    */
   public function update_post_meta( $ID )
   {}
 
+
+  /**
+   * void restore_meta_from_revision( int $parent_ID, int $revision_ID )
+   *
+   * If your post type supports revisions, your implementation of this method should handle
+   * transferring a revision's meta data to its parent when that revision is restored.
+   *
+   * NOTE: You must use get_metadata() instead of get_post_meta() in this method, because
+   * the latter will switch its focus to the parent post if it's given a revision ID.
+   *
+   * @param  int  $parent_ID    The ID of the actual post (parent post).
+   * @param  int  $revision_ID  The revision's ID.
+   *
+   * @link   http://codex.wordpress.org/Function_Reference/get_metadata
+   *
+   */
+  public function restore_meta_from_revision( $parent_ID, $revision_ID )
+  {
+
+  }
 
 
   /**

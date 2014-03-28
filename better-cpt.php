@@ -217,10 +217,6 @@ abstract class WP_CPT
    */
   final public function set_args( $singular, $plural, $pos, $icon = 'dashicons-admin-post', $args = [] )
   {
-    // Standardize case of provided labels.
-    $singular = ucwords( strtolower( $singular ) );
-    $plural   = ucwords( strtolower( $plural ) );
-
     // Set labels.
     $labels = [
       'name'               => $plural,

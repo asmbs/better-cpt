@@ -356,9 +356,35 @@ abstract class WP_CPT
   // Messages and contextual help
   // -------------------------------------------------------------------------------------------
   
+  /**
+   * array post_updated_messages( array $messages )
+   *
+   * Modify the list of messages shown on the editor screen when a post is saved or updated.
+   *
+   * @param   array  $messages  The existing array of messages. See the example in the WordPress
+   *                            Codex entry for register_post_type() for details on the format
+   *                            of $messages.
+   * @return  array             The updated array of messages.
+   *
+   * @link    http://codex.wordpress.org/Function_Reference/register_post_type#Example
+   *
+   */
   public function post_updated_messages( $messages )
-  {}
+  {
+    return $messages;
+  }
 
+
+  /**
+   * void add_help_tabs()
+   *
+   * Modify the contextual help for a screen. Use get_current_screen() to get information about
+   * the current view and build your help content accordingly.
+   *
+   * @link  http://codex.wordpress.org/Function_Reference/get_current_screen
+   * @link  http://codex.wordpress.org/Function_Reference/register_post_type#Example
+   *
+   */
   public function add_help_tabs()
   {}
 

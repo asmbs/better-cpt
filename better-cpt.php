@@ -269,7 +269,7 @@ abstract class WP_CPT
     ];
 
     // Merge and save arguments.
-    $this->args = array_merge_recursive( $this->args, $auto_args, $args );
+    $this->args = array_replace_recursive( $this->args, $auto_args, $args );
   }
 
 
@@ -289,7 +289,7 @@ abstract class WP_CPT
    */
   final public function set_manual_args( $args )
   {
-    $this->args = array_merge_recursive( $this->args, $args );
+    $this->args = array_replace_recursive( $this->args, $args );
   }
 
   // ===========================================================================================

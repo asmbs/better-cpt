@@ -149,4 +149,32 @@ abstract class WP_Metabox
   {}
 
   // -------------------------------------------------------------------------------------------
+
+
+  // -------------------------------------------------------------------------------------------
+  // Utilities
+  // -------------------------------------------------------------------------------------------
+
+  /**
+   * object nonce()
+   *
+   * Generate action and name values for a nonce field.
+   *
+   * @return  object  The generated values. `$obj->name` contains the nonce name, which is just
+   *                  the meta box ID with `-nonce` appended to it. `$obj->action` is a
+   *                  substring of the sha1 digest of the meta box ID.
+   *
+   * @link    http://codex.wordpress.org/Function_Reference/wp_nonce_field
+   * @link    http://codex.wordpress.org/Function_Reference/wp_verify_nonce
+   * 
+   */
+  public static final function nonce()
+  {
+    return (object) [
+      'name' => static::$id .'-nonce',
+      'action' => substr( sha1( static::$id ), 7 )
+    ];
+  }
+
+  // -------------------------------------------------------------------------------------------
 }

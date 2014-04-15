@@ -69,7 +69,7 @@ abstract class WP_Metabox
   public static final function register( $post_type, $title, $args = NULL )
   {
     add_meta_box(
-      self::$id,
+      static::$id,
       $title,
       [ get_called_class(), 'render' ],
       $post_type,

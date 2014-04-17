@@ -75,11 +75,11 @@ abstract class WP_Meta
   public final function __construct( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
   {
     // Use class's context and priority definitions if an override wasn't specified.
-    $context = empty( $context ) ? $this->$context : $context;
-    $priority = empty( $priority ) ? $this->$priority : $priority;
+    $context = empty( $context ) ? $this->context : $context;
+    $priority = empty( $priority ) ? $this->priority : $priority;
 
     // Set the arguments that add_meta_box() will have to reference.
-    $this->$args = [
+    $this->args = [
       'post_type' => $post_type,
       'title'     => $title,
       'context'   => $context,

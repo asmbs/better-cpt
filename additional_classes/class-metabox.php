@@ -2,17 +2,17 @@
 
 /**
  * ---------------------------------------------------------------------------------------------
- * WP_Metabox
+ * WP_Meta
  * ---------------------------------------------------------------------------------------------
  *
  * Offers a static API for registering and rendering meta boxes, as well as managing the
  * metadata that they hold.
  *
- * Extend this class and override its methods, then hook your methods to the appropriate actions
- * in your WP_CPT-extended class.
+ * Extend this class and override its methods, then just call the register() method inside your
+ * post type
  *
  */
-abstract class WP_Metabox
+abstract class WP_Meta
 {
   // -------------------------------------------------------------------------------------------
   // Variables
@@ -36,46 +36,89 @@ abstract class WP_Metabox
   public static $context = '';
 
   /**
-   * @var  string  Accepted values: `core`, `high`, `default`, `low`
+   * @var  string  Accepted values: `high`, `core`, `default`, `low`
    *
    * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
    *
    */
   public static $priority = '';
 
+  /**
+   * @var  array  Arguments to use for the call to WP's add_meta_box() function.
+   *
+   * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
+   *
+   */
+  public static $args = [];
+
   // -------------------------------------------------------------------------------------------
 
-
   // -------------------------------------------------------------------------------------------
-  // Hookable methods
+  // Setup
   // -------------------------------------------------------------------------------------------
 
   /**
-   * void register( string $post_type, string $title [, array $args = NULL] )
+   * void register( string $post_type, string $title [, string $context = NULL [, string $priority = NULL [, array $args = NULL]]] )
    *
-   * Adds the meta box with the given parameters. Should be run from the
-   * `add_meta_boxes` action.
+   * Registers this metadata manager; adds the meta box and sets hooks for saving, updating
+   * and removing metadata.
    *
-   * This method is FINAL; it cannot be overridden by a child class.
+   * @param  string  $post_type  The post type this class is being registered for.
+   * @param  string  $title      The title to display on the meta box (marked for translation).
+   * @param  string  $context    Overrides the context defined by the class.
+   * @param  string  $priority   Overrides the priority defined by the class.
+   * @param  array   $args       Additional meta box args to pass.
    *
-   * @param  string      $post_type  The post type the meta box should be displayed on.
-   * @param  string      $title      The title of the meta box (should be marked for
-   *                                 translation).
-   * @param  array|null  $args       Additional arguments to be passed.
-   *
-   * @link http://codex.wordpress.org/Function_Reference/add_meta_box
+   * @see   WP_Meta::$context, WP_Meta::$priority
    *
    */
-  public static final function register( $post_type, $title, $args = NULL )
+  public static final function register( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
+  {
+    // Use class's context and priority definitions if an override wasn't specified.
+    $context = empty( $context ) ? static::$context : $context;
+    $priority = empty( $priority ) ? static::$priority : $priority;
+
+    // Set the arguments that add_meta_box() will have to reference.
+    static::$args = [
+      'post_type' => $post_type,
+      'title'     => $title,
+      'context'   => $context,
+      'priority'  => $priority,
+      'args'      => $args
+    ];
+
+    // Set all the necessary hooks.
+    add_action( 'add_meta_boxes_'. $post_type, [ get_called_class(), 'add_meta_box' ] );
+    add_action( 'save_post', [ get_called_class(), 'save_metadata' ] );
+    add_action( 'wp_restore_post_revision', [ get_called_class(), 'restore_metadata_from_revision' ], 10, 2 );
+    add_action( 'delete_post', [ get_called_class(), 'delete_linked_metadata' ] );
+  }
+
+  // -------------------------------------------------------------------------------------------
+
+
+  // -------------------------------------------------------------------------------------------
+  // Hooked methods
+  // -------------------------------------------------------------------------------------------
+
+  /**
+   * void add_meta_box()
+   *
+   * Registers the meta box for the specified post type.
+   *
+   * @link  http://codex.wordpress.org/Function_Reference/add_meta_box
+   *
+   */
+  public static final function add_meta_box()
   {
     add_meta_box(
       static::$id,
-      $title,
+      static::$args['title'],
       [ get_called_class(), 'render' ],
-      $post_type,
-      static::$context,
-      static::$priority,
-      $args
+      static::$args['post_type'],
+      static::$args['context'],
+      static::$args['priority'],
+      static::$args['args']
     );
   }
 
@@ -115,7 +158,7 @@ abstract class WP_Metabox
   {}
 
   /**
-   * void restore_from_revision( int $parent_ID, int $revision_ID )
+   * void restore_metadata_from_revision( int $parent_ID, int $revision_ID )
    *
    * If your metadata is being kept for revisions, override this method to handle restoring
    * metadata when a revision is restored.
@@ -128,11 +171,11 @@ abstract class WP_Metabox
    * @see    WP_CPT::restore_meta_from_revision()
    *
    */
-  public static function restore_from_revision( $parent_ID, $revision_ID )
+  public static function restore_metadata_from_revision( $parent_ID, $revision_ID )
   {}
 
   /**
-   * void remove_linked_meta( int $ID )
+   * void delete_linked_metadata( int $ID )
    *
    * If any metadata being managed by your WP_Metabox child class is being used to associate
    * the target post type with posts of another type, this method should handle removing those
@@ -145,7 +188,7 @@ abstract class WP_Metabox
    * @see    WP_CPT::remove_linked_meta()
    *
    */
-  public static function remove_linked_meta( $ID )
+  public static function delete_linked_metadata( $ID )
   {}
 
   // -------------------------------------------------------------------------------------------

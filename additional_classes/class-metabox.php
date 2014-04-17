@@ -58,7 +58,7 @@ abstract class WP_Meta
   // -------------------------------------------------------------------------------------------
 
   /**
-   * void register( string $post_type, string $title [, string $context = NULL [, string $priority = NULL [, array $args = NULL]]] )
+   * __construct( string $post_type, string $title [, string $context = NULL [, string $priority = NULL [, array $args = NULL]]] )
    *
    * Registers this metadata manager; adds the meta box and sets hooks for saving, updating
    * and removing metadata.
@@ -72,7 +72,7 @@ abstract class WP_Meta
    * @see   WP_Meta::$context, WP_Meta::$priority
    *
    */
-  public final function register( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
+  public final function __construct( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
   {
     // Use class's context and priority definitions if an override wasn't specified.
     $context = empty( $context ) ? $this->$context : $context;

@@ -121,14 +121,14 @@ abstract class WP_CPT
     // what happens if the relates post is removed.
     add_action( 'delete_post', [ $this, 'remove_linked_meta'] );    
 
-    // Modify queries
+    // Modify queries.
     add_action( 'pre_get_posts', [ $this, 'modify_query' ] );
 
-    // Add AJAX endpoints
+    // Add AJAX endpoints.
     $this->add_ajax_endpoints();
 
-    // Set any additional hooks
-    $this->additional_hooks();
+    // Do any additional init tasks.
+    $this->init();
   }
 
 
@@ -158,7 +158,16 @@ abstract class WP_CPT
   public function register_deactivation_hooks()
   {}
 
-  public function additional_hooks()
+  /**
+   * void init()
+   *
+   * Override this method to add additional hooks or perform additional functions during
+   * construction of your post type object.
+   *
+   * @see  __construct()
+   *
+   */
+  public function init()
   {}
 
   // ===========================================================================================

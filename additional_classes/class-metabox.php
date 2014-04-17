@@ -5,7 +5,7 @@
  * WP_Meta
  * ---------------------------------------------------------------------------------------------
  *
- * Offers a static API for registering and rendering meta boxes, as well as managing the
+ * Offers an API for registering and rendering meta boxes, as well as managing the
  * metadata that they hold.
  *
  * Extend this class and override its methods, then just call the register() method inside your
@@ -24,7 +24,7 @@ abstract class WP_Meta
    * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
    *
    */
-  public static $id = '';
+  public $id = '';
 
   /**
    * @var  string  Where the box will be shown on the edit screen.
@@ -33,7 +33,7 @@ abstract class WP_Meta
    * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
    *
    */
-  public static $context = '';
+  public $context = '';
 
   /**
    * @var  string  Accepted values: `high`, `core`, `default`, `low`
@@ -41,7 +41,7 @@ abstract class WP_Meta
    * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
    *
    */
-  public static $priority = '';
+  public $priority = '';
 
   /**
    * @var  array  Arguments to use for the call to WP's add_meta_box() function.
@@ -49,7 +49,7 @@ abstract class WP_Meta
    * @link http://codex.wordpress.org/Function_Reference/add_meta_box#Parameters
    *
    */
-  public static $args = [];
+  public $args = [];
 
   // -------------------------------------------------------------------------------------------
 
@@ -72,14 +72,14 @@ abstract class WP_Meta
    * @see   WP_Meta::$context, WP_Meta::$priority
    *
    */
-  public static final function register( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
+  public final function register( $post_type, $title, $context = NULL, $priority = NULL, $args = NULL )
   {
     // Use class's context and priority definitions if an override wasn't specified.
-    $context = empty( $context ) ? static::$context : $context;
-    $priority = empty( $priority ) ? static::$priority : $priority;
+    $context = empty( $context ) ? $this->$context : $context;
+    $priority = empty( $priority ) ? $this->$priority : $priority;
 
     // Set the arguments that add_meta_box() will have to reference.
-    static::$args = [
+    $this->$args = [
       'post_type' => $post_type,
       'title'     => $title,
       'context'   => $context,
@@ -88,10 +88,10 @@ abstract class WP_Meta
     ];
 
     // Set all the necessary hooks.
-    add_action( 'add_meta_boxes_'. $post_type, [ get_called_class(), 'add_meta_box' ] );
-    add_action( 'save_post', [ get_called_class(), 'save_metadata' ] );
-    add_action( 'wp_restore_post_revision', [ get_called_class(), 'restore_metadata_from_revision' ], 10, 2 );
-    add_action( 'delete_post', [ get_called_class(), 'delete_linked_metadata' ] );
+    add_action( 'add_meta_boxes_'. $post_type, [ $this, 'add_meta_box' ] );
+    add_action( 'save_post', [ $this, 'save_metadata' ] );
+    add_action( 'wp_restore_post_revision', [ $this, 'restore_metadata_from_revision' ], 10, 2 );
+    add_action( 'delete_post', [ $this, 'delete_linked_metadata' ] );
   }
 
   // -------------------------------------------------------------------------------------------
@@ -109,16 +109,16 @@ abstract class WP_Meta
    * @link  http://codex.wordpress.org/Function_Reference/add_meta_box
    *
    */
-  public static final function add_meta_box()
+  public final function add_meta_box()
   {
     add_meta_box(
-      static::$id,
-      static::$args['title'],
-      [ get_called_class(), 'render' ],
-      static::$args['post_type'],
-      static::$args['context'],
-      static::$args['priority'],
-      static::$args['args']
+      $this->id,
+      $this->args['title'],
+      [ $this, 'render' ],
+      $this->args['post_type'],
+      $this->args['context'],
+      $this->args['priority'],
+      $this->args['args']
     );
   }
 
@@ -133,7 +133,7 @@ abstract class WP_Meta
    * @param  array    $metabox  An array describing the meta box.
    *
    */
-  public static function render( $post, $metabox )
+  public function render( $post, $metabox )
   {
     echo '<p>Uh oh, somebody didn\'t override their render method...</p>';
   }
@@ -154,7 +154,7 @@ abstract class WP_Meta
    * @see    WP_CPT::update_post_meta()
    *
    */
-  public static function save_metadata( $ID )
+  public function save_metadata( $ID )
   {}
 
   /**
@@ -171,7 +171,7 @@ abstract class WP_Meta
    * @see    WP_CPT::restore_meta_from_revision()
    *
    */
-  public static function restore_metadata_from_revision( $parent_ID, $revision_ID )
+  public function restore_metadata_from_revision( $parent_ID, $revision_ID )
   {}
 
   /**
@@ -188,7 +188,7 @@ abstract class WP_Meta
    * @see    WP_CPT::remove_linked_meta()
    *
    */
-  public static function delete_linked_metadata( $ID )
+  public function delete_linked_metadata( $ID )
   {}
 
   // -------------------------------------------------------------------------------------------
@@ -211,11 +211,11 @@ abstract class WP_Meta
    * @link    http://codex.wordpress.org/Function_Reference/wp_verify_nonce
    * 
    */
-  public static final function nonce()
+  public final function nonce()
   {
     return (object) [
-      'name' => static::$id .'-nonce',
-      'action' => substr( sha1( static::$id ), 7 )
+      'name' => $this->id .'-nonce',
+      'action' => substr( sha1( $this->id ), 7 )
     ];
   }
 

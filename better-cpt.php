@@ -127,8 +127,15 @@ abstract class WP_CPT
     // Add AJAX endpoints.
     $this->add_ajax_endpoints();
 
-    // Do any additional init tasks.
+    // Do global init tasks.
     $this->init();
+
+    // Do edit-screen-only init tasks.
+    if ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->post_type )
+    {
+      error_log( print_r( $_REQUEST, true ) );
+      $this->init_for_editor();
+    }
   }
 
 
@@ -168,6 +175,9 @@ abstract class WP_CPT
    *
    */
   public function init()
+  {}
+
+  public function init_for_editor()
   {}
 
   // ===========================================================================================

@@ -92,7 +92,21 @@ abstract class WP_Meta
     add_action( 'save_post', [ $this, 'save_metadata' ] );
     add_action( 'wp_restore_post_revision', [ $this, 'restore_metadata_from_revision' ], 10, 2 );
     add_action( 'delete_post', [ $this, 'delete_linked_metadata' ] );
+
+    // Allow child class to do additional init stuff.
+    $this->init();
   }
+
+
+  /**
+   * void init()
+   *
+   * Called in the constructor; child classes can override this method to perform their
+   * own initializations.
+   *
+   */
+  public function init()
+  {}
 
   // -------------------------------------------------------------------------------------------
 

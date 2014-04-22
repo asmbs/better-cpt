@@ -49,6 +49,9 @@ abstract class WP_Taxonomy
    * __construct( ... )
    *
    * Sets argument list for registering the taxonomy and adds the init hook to do the actual registration.
+   *
+   * @param  string  $name          The name of the taxonomy; corresponds to the first argument of
+   *                                register_taxonomy().
    * @param  string  $singular      The singular of the taxonomy name, marked for l10n.
    * @param  string  $plural        The plural of the taxonomy name, marked for l10n.
    *                                categories) or not (like tags).
@@ -60,8 +63,11 @@ abstract class WP_Taxonomy
    * @link   http://codex.wordpress.org/Function_Reference/register_taxonomy
    *
    */
-  public final function __construct( $singular, $plural, $custom_cb = false, $extra_args = [] )
+  public final function __construct( $name, $singular, $plural, $custom_cb = false, $extra_args = [] )
   {
+    // Set the taxonomy name.
+    $this->name = $name;
+
     // Set standard labels.
     $labels = [
       'name'          => $plural,

@@ -87,6 +87,9 @@ abstract class WP_CPT
    */
   public final function __construct( $post_type )
   {
+    // Set post type.
+    $this->post_type = $post_type;
+
     // Set activation and deactivation hooks.
     $this->register_activation_hooks();
     $this->register_deactivation_hooks();

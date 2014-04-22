@@ -20,16 +20,23 @@ abstract class WP_Taxonomy
 
 
   /**
-   * @var  array  The arguments used to construct the taxonomy.
+   * @var  bool  Whether this is a hierarchical taxonomy.
    *
    */
-  protected $args = [];
+  public $hierarchical = false;
 
 
   /**
    * @var  array  The object/post types this taxonomy is registered for.
    */
-  protected $object_types = [];
+  protected $post_types = [];
+
+
+  /**
+   * @var  array  The arguments used to construct the taxonomy.
+   *
+   */
+  protected $args = [];
 
   // -------------------------------------------------------------------------------------------
 
@@ -44,7 +51,6 @@ abstract class WP_Taxonomy
    * Sets argument list for registering the taxonomy and adds the init hook to do the actual registration.
    * @param  string  $singular      The singular of the taxonomy name, marked for l10n.
    * @param  string  $plural        The plural of the taxonomy name, marked for l10n.
-   * @param  bool    $hierarchical  Whether or not this taxonomy should be hierarchical (like
    *                                categories) or not (like tags).
    * @param  bool    $custom_cb     If set to TRUE, will use this class's render_meta_box()
    *                                function instead of using the default UI.
@@ -54,7 +60,7 @@ abstract class WP_Taxonomy
    * @link   http://codex.wordpress.org/Function_Reference/register_taxonomy
    *
    */
-  public final function __construct( $singular, $plural, $hierarchical = false, $custom_cb = false, $extra_args = [] )
+  public final function __construct( $singular, $plural, $custom_cb = false, $extra_args = [] )
   {
     // Set standard labels.
     $labels = [
@@ -71,7 +77,7 @@ abstract class WP_Taxonomy
     ];
 
     // Set specific labels for hierarchical/non-hierarchical use.
-    if ( $hierarchical )
+    if ( $this->hierarchical )
     {
       $labels = array_replace_recursive( $labels, [
         'parent_item'       => sprintf( __( 'Parent %s' ), $singular ),
@@ -99,7 +105,7 @@ abstract class WP_Taxonomy
       'show_tagcloud'     => false,
       'meta_box_cb'       => $custom_cb ? [ $this, 'render_meta_box' ] : NULL,
       'show_admin_column' => true,
-      'hierarchical'      => $hierarchical,
+      'hierarchical'      => $this->hierarchical,
       'rewrite'           => [
         'slug'       => sanitize_title( $plural, 'taxonomy slug' ),
         'with_front' => true
@@ -114,7 +120,14 @@ abstract class WP_Taxonomy
 
   public final function register_taxonomy()
   {
+    // Register the taxonomy itself.
     register_taxonomy( $this->name, NULL, $this->args );
+
+    // Register it for the specified post types.
+    foreach ( $this->post_types as $post_type )
+    {
+      $this->add_to_post_type( $post_type );
+    }
   }
 
   // -------------------------------------------------------------------------------------------
@@ -144,20 +157,6 @@ abstract class WP_Taxonomy
   public final function add_to_post_type( $post_type )
   {
     return register_taxonomy_for_object_type( $this->name, $post_type );
-  }
-
-
-  /**
-   * @param   string  $object_type  The post type to attach this taxonomy to.
-   * @return  bool                  The result of register_taxonomy_for_object_type().
-   *
-   * @link    http://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type
-   *
-   */
-
-  public final function add_to_object_type( $object_type )
-  {
-    return register_taxonomy_for_object_type( $this->name, $object_type );
   }
 
   // -------------------------------------------------------------------------------------------

@@ -81,8 +81,11 @@ abstract class WP_CPT
    *
    * Constructor. Sets a butt load of hooks (like, all of them).
    *
+   * @param  string  $post_type  The name of the post type; corresponds to the first argument
+   *                             of register_post_type().
+   *
    */
-  public function __construct()
+  public final function __construct( $post_type )
   {
     // Set activation and deactivation hooks.
     $this->register_activation_hooks();

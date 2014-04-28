@@ -89,7 +89,7 @@ abstract class WP_Meta
 
     // Set all the necessary hooks.
     add_action( 'add_meta_boxes_'. $post_type, [ $this, 'add_meta_box' ] );
-    add_action( 'save_post', [ $this, 'save_metadata' ] );
+    add_action( 'save_post', [ $this, 'maybe_save_metadata' ] );
     add_action( 'wp_restore_post_revision', [ $this, 'restore_metadata_from_revision' ], 10, 2 );
     add_action( 'delete_post', [ $this, 'delete_linked_metadata' ] );
 
@@ -150,6 +150,23 @@ abstract class WP_Meta
   public function render( $post, $metabox )
   {
     echo '<p>Uh oh, somebody didn\'t override their render method...</p>';
+  }
+
+
+  /**
+   * maybe_save_metadata( $ID )
+   *
+   * Basically, a filter for the save_metadata() method; restricts calling of said method
+   * to the save action of the post type the object was instantiated for.
+   *
+   * @param  int  $ID  The ID of the post being saved/updated.
+   * @see    save_metadata()
+   *
+   */
+  public final function maybe_save_metadata( $ID )
+  {
+    if ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->args['post_type'] )
+      $this->save_metadata( $ID );
   }
 
 

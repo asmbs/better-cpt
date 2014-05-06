@@ -278,7 +278,6 @@ abstract class WP_CPT
       'menu_position'       => $pos,
       'menu_icon'           => $icon,
       'hierarchical'        => false,
-      'supports'            => [ 'title', 'editor' ],
       'has_archive'         => true,
       'rewrite'             => [ 'slug' => $slug, 'with_front' => true ],
       'can_export'          => true

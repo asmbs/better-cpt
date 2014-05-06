@@ -233,7 +233,7 @@ abstract class WP_CPT
    *                                more granular control).
    * @param  string      $icon      The dashicons helper name for the icon you wish to use (pass
    *                                NULL or an empty string if you plan on using your own).
-   * @param  array       $args      Additional earguments to merge in. Note that arguments
+   * @param  array       $args      Additional arguments to merge in. Note that arguments
    *                                generated from previous parameters will be overwritten by
    *                                this array, so be mindful.
    *

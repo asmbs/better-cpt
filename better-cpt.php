@@ -10,7 +10,7 @@
  * License:     MIT License
  * License URI: http://opensource.org/licenses/MIT
  *
- * Version:     1.0.0-beta
+ * Version:     0.0.0
  */
 
 

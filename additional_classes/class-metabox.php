@@ -165,7 +165,7 @@ abstract class WP_Meta
    */
   public final function maybe_save_metadata( $ID )
   {
-    if ( $_REQUEST['action'] == 'restore' || ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->args['post_type'] ) )
+    if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'restore' ) || ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == $this->args['post_type'] ) )
     {
       $this->save_metadata( $ID );
     }

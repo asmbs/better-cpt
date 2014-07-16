@@ -16,5 +16,6 @@
 // Include classes
 include_once 'classes/cpt.php';
 include_once 'classes/taxonomy.php';
+include_once 'functions/quick.php';
 
 // Seriously, that's it.
